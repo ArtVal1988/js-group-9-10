@@ -1,2 +1,2 @@
 'use strict';
-console.log('aaa!');
+console.log(Math.random(10));
