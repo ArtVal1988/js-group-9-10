@@ -4,6 +4,7 @@ const adminLogin = 'admin';
 const adminPassword = 'm4ng0h4ckz';
 
 const messageLogin = 'Введите логин';
+const messageWrongLogin = 'Доступ запрещен, неверный логин!';
 const messagePsw = 'Введите пароль';
 const messageCancel = 'Отменено пользователем!';
 const messageRight = 'Добро пожаловать!';
@@ -21,6 +22,8 @@ if (login === null) {
             alert (messageRight);
         } else {
             alert (messageWrong);
-        }
-}    
+        } 
+}   else {
+    alert (messageWrongLogin);
+}
 
