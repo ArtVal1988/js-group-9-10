@@ -18,9 +18,10 @@ do {
     
 } while (true)
 
-for (let number of numbers) {
-    total +=number;
+
+if (numbers.length !== 0) {
+    for (let number of numbers) {
+        total +=number;
+    }
+    alert(`Общая сумма чисел равна ${total}`);
 }
-
-
-alert(`Общая сумма чисел равна 0${total}`);
