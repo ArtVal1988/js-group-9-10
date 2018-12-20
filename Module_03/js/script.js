@@ -1,27 +1,19 @@
 'use strict';
 
-let userInput, userNumber;
-const numbers = [];
-let total = 0;
+const logins = ['Mango', 'robotGoogles', 'Poly', 'Aj4x1sBozz', 'qwerty123'];
 
-do {
-    userInput = prompt('Введите новое число для массива');
-    if (userInput === null) break;
-    if (userInput !=='') {
-        userNumber = Number(userInput);
-        if (!Number.isNaN(userNumber)){
-            numbers.push(userNumber);
-        } else {
-            alert("Было введено не число, попробуйте еще раз");       
-        }
-    }
-    
-} while (true)
+const isLoginValid = function(login) {};
 
+const isLoginUnique = function(allLogins, login) {
+  // код
+};
 
-if (numbers.length !== 0) {
-    for (let number of numbers) {
-        total +=number;
-    }
-    alert(`Общая сумма чисел равна ${total}`);
-}
+const addLogin = function(allLogins, login) {
+  if ()
+};
+
+// Вызовы функции для проверки
+addLogin(logins, 'Ajax'); // 'Логин успешно добавлен!'
+addLogin(logins, 'robotGoogles'); // 'Такой логин уже используется!'
+addLogin(logins, 'Zod'); // 'Ошибка! Логин должен быть от 4 до 16 символов'
+addLogin(logins, 'jqueryisextremelyfast'); // 'Ошибка! Логин должен быть от 4 до 16 символов'
