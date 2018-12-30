@@ -11,16 +11,13 @@ const isLoginUnique = function(allLogins, login) {
 };
 
 const addLogin = function(allLogins, login) {
-  if (isLoginValid(login)) {
-    if (isLoginUnique(allLogins, login)) {
-      allLogins.push(login);
-      return 'Логин успешно добавлен!';
-    } else {
-      return 'Такой логин уже используется!';
-    }
-  } else {
-    return 'Ошибка! Логин должен быть от 4 до 16 символов';
-  }
+  const valid = isLoginValid(login);
+  const unique = isLoginUnique(allLogins, login);
+
+  if (!valid) return 'Ошибка! Логин должен быть от 4 до 16 символов';
+  if (!unique) return 'Такой логин уже используется!';
+
+  return 'Логин успешно добавлен!';
 };
 
 // Вызовы функции для проверки

@@ -1,6 +1,7 @@
 'use strict';
 
 const cashier = {
+  catch: 'Raketa',
   name: 'Mango',
   customerMoney: 0,
   totalPrice: 0,
