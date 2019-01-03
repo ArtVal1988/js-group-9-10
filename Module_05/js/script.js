@@ -39,7 +39,6 @@ const Notebook = function Notebook(notes = []) {
     if (!note) return;
 
     for (let field in updatedContent) {
-      console.log(field, note[field]);
       note[field] = updatedContent[field];
     }
 
