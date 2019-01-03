@@ -1,28 +1,58 @@
 'use strict';
 
+/*
+  Note Schema
+
+    id: integer | string
+    title: string
+    body: string
+    priority: integer [0-2]
+*/
+
 const PRIORITY_TYPES = {
   LOW: 0,
   NORMAL: 1,
   HIGH: 2,
 };
 
+// Model
 const notebook = {
   notes: [],
-
   getNotes() {
     return this.notes;
   },
-
-  findNoteById(id) {
-    for (let note of this.notes) {
-      if (note.id === id) return note;
-    }
-  },
-
   saveNote(note) {
     this.notes.push(note);
   },
+  findNoteById(id) {
+    for (const note of this.notes) {
+      if (note.id === id) {
+        return note;
+      }
+    }
+  },
+  updateNotePriority(id, priority) {
+    const note = this.findNoteById(id);
 
+    if (!note) return;
+
+    note.priority = priority;
+  },
+  filterNotes(query = '') {
+    const filteredNotes = [];
+
+    for (const note of this.notes) {
+      const { title, body } = note;
+      const noteContent = `${title} ${body}`;
+      const hasQuery = noteContent.toLowerCase().includes(query.toLowerCase());
+
+      if (hasQuery) {
+        filteredNotes.push(note);
+      }
+    }
+
+    return filteredNotes;
+  },
   deleteNote(id) {
     for (let i = 0; i < this.notes.length; i += 1) {
       const note = this.notes[i];
@@ -33,46 +63,15 @@ const notebook = {
       }
     }
   },
-
-  updateNoteContent(id, updatedContent) {
-    let note = this.findNoteById(id);
-    if (!note) return;
-
-    for (let field in updatedContent) {
-      console.log(field, note[field]);
-      note[field] = updatedContent[field];
-    }
-
-    return note;
-  },
-  updateNotePriority(id, priority) {
+  // Дестуктуризируем второй параметр
+  updateNoteContent(id, { field, value }) {
     const note = this.findNoteById(id);
 
     if (!note) return;
 
-    note.priority = priority;
-    return note;
-  },
-  filterNotes(query) {
-    let filtredNotes = [];
-
-    for (const note of this.notes) {
-      const { title, body } = note;
-      let noteContent = `${title} + ${body}`.toLowerCase();
-      let hasQuery = noteContent.includes(query.toLowerCase());
-
-      if (hasQuery) {
-        filtredNotes.push(note);
-      }
-    }
-
-    return filtredNotes;
+    note[field] = value;
   },
 };
-
-/*
-  Добавляю 4 заметки и смотрю что получилось
-*/
 
 notebook.saveNote({
   id: 1,
@@ -92,7 +91,7 @@ notebook.saveNote({
 
 notebook.saveNote({
   id: 3,
-  title: 'Get comfy with Frontend frameworks',
+  title: 'Get comfy with Frontend Frameworks',
   body:
     'First must get some general knowledge about frameworks, then maybe try each one for a week or so. Need to choose between React, Vue and Angular, by reading articles and watching videos.',
   priority: PRIORITY_TYPES.NORMAL,
@@ -106,11 +105,10 @@ notebook.saveNote({
   priority: PRIORITY_TYPES.LOW,
 });
 
+// Смотрю что у меня в заметках
 console.log('Все текущие заметки: ', notebook.getNotes());
 
-/*
-  Зима уже близко, пора поднять приоритет на покупку одежды
-*/
+// Зима уже близко, пора поднять приоритет на покупку одежды
 notebook.updateNotePriority(4, PRIORITY_TYPES.NORMAL);
 // Смотрю что у меня в заметках
 console.log(
@@ -118,45 +116,36 @@ console.log(
   notebook.getNotes(),
 );
 
-/*
-  Решил что фреймворки отложу немного, понижаю приоритет
-*/
+// Решил что фреймворки отложу немного, понижаю приоритет
 notebook.updateNotePriority(3, PRIORITY_TYPES.LOW);
+// Смотрю что у меня в заметках
 console.log(
   'Заметки после обновления приоритета для id 3: ',
   notebook.getNotes(),
 );
 
-/*
-  Решил отфильтровать заметки по слову html
-*/
+// Решил отфильтровать заметки по слову html
 console.log(
   'Отфильтровали заметки по ключевому слову "html": ',
   notebook.filterNotes('html'),
 );
 
-/*
-  Решил отфильтровать заметки по слову javascript
-*/
+// Решил отфильтровать заметки по слову javascript
 console.log(
   'Отфильтровали заметки по ключевому слову "javascript": ',
   notebook.filterNotes('javascript'),
 );
 
-/*
-  Обновим контент заметки с id 3
-*/
-notebook.updateNoteContent(3, {
-  title: 'Get comfy with React.js or Vue.js',
-  body: 'Bla! Bla! Bla! Bla! Bla! Bla! Bla! Bla! ',
-});
-console.log(
-  'Заметки после обновления контента заметки с id 3: ',
-  notebook.getNotes(),
-);
-
-/*
-  Повторил HTML и CSS, удаляю запись c id 2
-*/
+// Повторил HTML и CSS, удаляю запись по id
 notebook.deleteNote(2);
+// Смотрю что у меня в заметках
 console.log('Заметки после удаления с id 2: ', notebook.getNotes());
+
+// Обновим заметку с id 3
+notebook.updateNoteContent(3, {
+  field: 'title',
+  value: 'Get comfy with React.js',
+});
+
+// Смотрю что у меня в заметках
+console.log('Заметки после обновления с id 3: ', notebook.getNotes());

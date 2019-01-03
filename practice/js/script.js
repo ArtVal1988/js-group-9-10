@@ -10,10 +10,10 @@ function User(name, isActive, age, friends) {
 }
 
 const user1 = new User('Bob', true, 14, 24);
-console.log(user1.grtUserInfo());
+console.log(user1.getUserInfo());
 
 const user2 = new User('Rob', true, 16, 14);
-console.log(user2.grtUserInfo());
+console.log(user2.getUserInfo());
 
 const user3 = new User('Lol', true, 99, 0);
-console.log(user3.grtUserInfo());
+console.log(user3.getUserInfo());
