@@ -1,115 +1,183 @@
 'use strict';
 
-function Cashier(name) {
-  this.name = name;
-  this.customerMoney = 0;
-  this.totalPrice = 0;
-  this.change = 0;
-  this.error = null;
+const PRIORITY_TYPES = {
+  LOW: 0,
+  NORMAL: 1,
+  HIGH: 2,
+};
 
-  this.greet = function() {
-    return `Добрый день, вас обслуживает ${this.name}`;
+const Notebook = function Notebook(notes = []) {
+  this.notes = notes;
+
+  this.getNotes = function() {
+    return this.notes;
   };
 
-  this.getCustomerMoney = function(value) {
-    this.customerMoney = value;
-  };
-
-  this.countTotalPrice = function(allProducts, order) {
-    const keys = Object.keys(order);
-    for (const key of keys) {
-      this.totalPrice += order[key] * allProducts[key];
+  this.findNoteById = function(id) {
+    for (let note of this.notes) {
+      if (note.id === id) return note;
     }
   };
 
-  this.countChange = function() {
-    this.change = this.customerMoney - this.totalPrice;
-    if (this.change < 0) {
-      this.error = 'Очень жаль, вам не хватает денег на покупки';
+  this.saveNote = function(note) {
+    this.notes.push(note);
+  };
+
+  this.deleteNote = function(id) {
+    for (let i = 0; i < this.notes.length; i += 1) {
+      const note = this.notes[i];
+
+      if (note.id === id) {
+        this.notes.splice(i, 1);
+        return;
+      }
     }
   };
 
-  this.onSuccess = function() {
-    console.log(`Спасибо за покупку, ваша сдача ${this.change}!`);
+  this.updateNoteContent = function(id, updatedContent) {
+    let note = this.findNoteById(id);
+    if (!note) return;
+
+    for (let field in updatedContent) {
+      console.log(field, note[field]);
+      note[field] = updatedContent[field];
+    }
+
+    return note;
   };
 
-  this.onError = function() {
-    console.log(this.error);
+  this.updateNotePriority = function(id, priority) {
+    const note = this.findNoteById(id);
+
+    if (!note) return;
+
+    note.priority = priority;
+    return note;
   };
 
-  this.reset = function() {
-    this.customerMoney = 0;
-    this.totalPrice = 0;
-    this.change = 0;
-    this.error = null;
-  };
-}
+  this.filterNotes = function(query) {
+    let filtredNotes = [];
 
-const products = {
-  bread: 10,
-  milk: 15,
-  apples: 20,
-  chicken: 50,
-  cheese: 40,
+    for (const note of this.notes) {
+      const { title, body } = note;
+      let noteContent = `${title} + ${body}`.toLowerCase();
+      let hasQuery = noteContent.includes(query.toLowerCase());
+
+      if (hasQuery) {
+        filtredNotes.push(note);
+      }
+    }
+
+    return filtredNotes;
+  };
 };
 
-const order = {
-  bread: 2,
-  milk: 2,
-  apples: 1,
-  cheese: 1,
+Notebook.PRIORITIES = {
+  0: { id: 0, value: 0, name: 'Low' },
+  1: { id: 1, value: 1, name: 'Normal' },
+  2: { id: 2, value: 2, name: 'High' },
 };
 
-const poly = new Cashier('Poly');
-const mango = new Cashier('Mango');
-const ajax = new Cashier('Ajax');
+Notebook.getPriorityName = function getPriorityName(priorityId) {
+  return Notebook.PRIORITIES[priorityId].name;
+};
+const initialNotes = [
+  {
+    id: 1,
+    title: 'JavaScript essentials',
+    body:
+      'Get comfortable with all basic JavaScript concepts: variables, loops, arrays, branching, objects, functions, scopes, prototypes etc',
+    priority: PRIORITY_TYPES.HIGH,
+  },
+  {
+    id: 2,
+    title: 'Refresh HTML and CSS',
+    body:
+      'Need to refresh HTML and CSS concepts, after learning some JavaScript. Maybe get to know CSS Grid and PostCSS, they seem to be trending.',
+    priority: PRIORITY_TYPES.NORMAL,
+  },
+];
 
-console.log(mango); // объект со свойствами и name содержит значение Mango
-console.log(ajax); // объект со свойствами и name содержит значение Ajax
-console.log(poly); // объект со свойствами и name содержит значение Ajax
+/*
+  Посмотрим имя приоритета по id
+*/
+console.log(Notebook.getPriorityName(PRIORITY_TYPES.LOW)); // "Low"
+console.log(Notebook.getPriorityName(PRIORITY_TYPES.NORMAL)); // "Normal"
+console.log(Notebook.getPriorityName(PRIORITY_TYPES.HIGH)); // "High"
 
-// Проверяем исходные значения полей
-console.log(poly.name); // Poly
-console.log(poly.customerMoney); // 0
-console.log(poly.totalPrice); // 0
-console.log(poly.change); // 0
-console.log(poly.error); // null
+const notebook = new Notebook(initialNotes);
 
-console.log(ajax.greet()); // Добрый день, вас обслуживает Poly
+/*
+  Смотрю что у меня в заметках после инициализации
+*/
+console.log('Все текущие заметки: ', notebook.getNotes());
 
-// Вызываем метод countTotalPrice для подсчета общей суммы
-// передавая products - список всех продуктов
-// и order - список покупок клиента
-poly.countTotalPrice(products, order);
+/*
+  Добавляю еще 2 заметки и смотрю что получилось
+*/
+notebook.saveNote({
+  id: 3,
+  title: 'Get comfy with Frontend frameworks',
+  body:
+    'First must get some general knowledge about frameworks, then maybe try each one for a week or so. Need to choose between React, Vue and Angular, by reading articles and watching videos.',
+  priority: PRIORITY_TYPES.NORMAL,
+});
 
-// Проверям что посчитали
-console.log(poly.totalPrice); // 110
+notebook.saveNote({
+  id: 4,
+  title: 'Winter clothes',
+  body:
+    "Winter is coming! Need some really warm clothes: shoes, sweater, hat, jacket, scarf etc. Maybe should get a set of sportwear as well so I'll be able to do some excercises in the park.",
+  priority: PRIORITY_TYPES.LOW,
+});
 
-poly.getCustomerMoney(300);
+console.log('Все текущие заметки: ', notebook.getNotes());
 
-// Проверяем что в поле с деньгами клиента
-console.log(poly.customerMoney); // 300
+/*
+  Зима уже близко, пора поднять приоритет на покупку одежды
+*/
+notebook.updateNotePriority(4, PRIORITY_TYPES.NORMAL);
+console.log(
+  'Заметки после обновления приоритета для id 4: ',
+  notebook.getNotes(),
+);
 
-// Вызываем countChange для подсчета сдачи
-poly.countChange();
+/*
+  Решил что фреймворки отложу немного, понижаю приоритет
+*/
+notebook.updateNotePriority(3, PRIORITY_TYPES.LOW);
+console.log(
+  'Заметки после обновления приоритета для id 3: ',
+  notebook.getNotes(),
+);
 
-// Проверяем что нам вернул countChange
-console.log(poly.change); // 190
+/*
+  Решил отфильтровать заметки по слову html
+*/
+console.log(
+  'Отфильтровали заметки по ключевому слову "html": ',
+  notebook.filterNotes('html'),
+);
 
-// Проверяем результат подсчета денег
-if (poly.error === null) {
-  // При успешном обслуживании вызываем метод onSuccess
-  poly.onSuccess(); // Спасибо за покупку, ваша сдача 190
-} else {
-  // При неудачном обслуживании вызываем метод onError
-  poly.onError(); // Очень жаль, вам не хватает денег на покупки
-}
+/*
+  Решил отфильтровать заметки по слову javascript
+*/
+console.log(
+  'Отфильтровали заметки по ключевому слову "javascript": ',
+  notebook.filterNotes('javascript'),
+);
 
-// Вызываем reset при любом исходе обслуживания
-poly.reset();
+/*
+  Обновим контент заметки с id 3
+*/
+notebook.updateNoteContent(3, { title: 'Get comfy with React.js or Vue.js' });
+console.log(
+  'Заметки после обновления контента заметки с id 3: ',
+  notebook.getNotes(),
+);
 
-// Проверяем значения после reset
-console.log(poly.customerMoney); // 0
-console.log(poly.totalPrice); // 0
-console.log(poly.change); // 0
-console.log(poly.error); // null
+/*
+  Повторил HTML и CSS, удаляю запись c id 2
+*/
+notebook.deleteNote(2);
+console.log('Заметки после удаления с id 2: ', notebook.getNotes());
