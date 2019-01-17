@@ -1,19 +1,40 @@
-function User(name, isActive, age, friends) {
-  this.name = name;
-  this.isActive = isActive;
-  this.age = age;
-  this.friends = friends;
+'use strict';
 
-  this.getUserInfo = function() {
-    return `User ${name} is ${age} years old and has ${friends} friends`;
-  };
+class User {
+  constructor({ name = 'user', email = '', phone = '' }) {
+    this._name = name;
+    this._email = email;
+    this._phone = phone;
+  }
+
+  static showUserInfo(userObj) {
+    //console.log(this);
+    console.log('Name: ', userObj._name);
+    console.log('Email: ', userObj._email);
+  }
+
+  showPhone() {
+    console.log(this._phone);
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  set name(newName) {
+    this._name = newName;
+  }
 }
 
-const user1 = new User('Bob', true, 14, 24);
-console.log(user1.getUserInfo());
+const mango = new User({
+  name: 'Mango',
+  email: 'mango@mail.com',
+  phone: '99-99-99',
+});
 
-const user2 = new User('Rob', true, 16, 14);
-console.log(user2.getUserInfo());
-
-const user3 = new User('Lol', true, 99, 0);
-console.log(user3.getUserInfo());
+console.log(mango);
+console.log(mango.name);
+mango.name = 'Poly';
+mango.phone = '058 851-24-23';
+console.log(mango.name);
+console.log(mango.phone);

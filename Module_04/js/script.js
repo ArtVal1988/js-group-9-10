@@ -68,6 +68,18 @@ const notebook = {
 
     return filtredNotes;
   },
+  filtredByPriority(priority) {
+    const filtredByPriorityNotes = this.notes.filter(
+      note => note.priority === priority,
+    );
+
+    // for (const note of this.notes) {
+    //   if (note.priority === priority) {
+    //     filtredByPriorityNotes.push(note);
+    //   }
+    // }
+    return filtredByPriorityNotes;
+  },
 };
 
 /*
@@ -105,6 +117,11 @@ notebook.saveNote({
     "Winter is coming! Need some really warm clothes: shoes, sweater, hat, jacket, scarf etc. Maybe should get a set of sportwear as well so I'll be able to do some excercises in the park.",
   priority: PRIORITY_TYPES.LOW,
 });
+
+console.log(
+  'Filter by Priority:',
+  notebook.filtredByPriority(PRIORITY_TYPES.HIGH),
+);
 
 console.log('Все текущие заметки: ', notebook.getNotes());
 
