@@ -1,40 +1,14 @@
-'use strict';
+/*
+  Используя метод reduce, посчитайте сумму 
+  всех значений свойств объекта order.
+*/
 
-class User {
-  constructor({ name = 'user', email = '', phone = '' }) {
-    this._name = name;
-    this._email = email;
-    this._phone = phone;
-  }
+const order = {
+  bread: 10,
+  apples: 25,
+  chicken: 60,
+  milk: 15,
+  cheese: 40,
+};
 
-  static showUserInfo(userObj) {
-    //console.log(this);
-    console.log('Name: ', userObj._name);
-    console.log('Email: ', userObj._email);
-  }
-
-  showPhone() {
-    console.log(this._phone);
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  set name(newName) {
-    this._name = newName;
-  }
-}
-
-const mango = new User({
-  name: 'Mango',
-  email: 'mango@mail.com',
-  phone: '99-99-99',
-});
-
-console.log(mango);
-console.log(mango.name);
-mango.name = 'Poly';
-mango.phone = '058 851-24-23';
-console.log(mango.name);
-console.log(mango.phone);
+console.log(forEach);
