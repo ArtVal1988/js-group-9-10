@@ -1,14 +1,11 @@
-/*
-  Используя метод reduce, посчитайте сумму 
-  всех значений свойств объекта order.
-*/
+'use strict';
 
-const order = {
-  bread: 10,
-  apples: 25,
-  chicken: 60,
-  milk: 15,
-  cheese: 40,
-};
+const questions = [
+  { _id: 1, prop1: 'lol', prop2: 'lol2' },
+  { _id: 2, prop1: 'am', prop2: 'am2' },
+];
 
-console.log(forEach);
+const mapper = questions =>
+  questions.map(({ _id: id, ...props }) => ({ id, ...props }));
+
+console.log(mapper(questions));
