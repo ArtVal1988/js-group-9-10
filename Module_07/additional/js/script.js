@@ -1,7 +1,6 @@
 'use strict';
 
-const users = [
-  {
+const users = [{
     id: '701b29c3-b35d-4cf1-a5f6-8b12b29a5081',
     name: 'Moore Hensley',
     email: 'moorehensley@indexia.com',
@@ -109,22 +108,27 @@ const getUniqueSkills2 = users => {
 
 const getUniqueSkills3 = users =>
   users
-    .reduce((acc, user) => {
-      acc.push(...user.skills.filter(skill => !acc.includes(skill)));
-      return acc;
-    }, [])
-    .sort();
+  .reduce((acc, user) => {
+    acc.push(...user.skills.filter(skill => !acc.includes(skill)));
+    return acc;
+  }, [])
+  .sort();
 
 const getUniqueSkills4 = users =>
   users
-    .reduce(
-      (acc, user) => [
-        ...acc,
-        ...user.skills.filter(skill => !acc.includes(skill)),
-      ],
-      [],
-    )
-    .sort();
+  .reduce(
+    (acc, user) => [
+      ...acc,
+      ...user.skills.filter(skill => !acc.includes(skill)),
+    ],
+    [],
+  )
+  .sort();
 
 console.log(getUniqueSkills4(users));
 // [ 'adipisicing', 'amet', 'anim', 'commodo', 'culpa', 'elit', 'ex', 'ipsum', 'irure', 'laborum', 'lorem', 'mollit', 'non', 'nostrud', 'nulla', 'proident', 'tempor', 'velit', 'veniam' ]
+
+const getNamesSortedByFriendsCount = users => users.sort((a, b) => a.friends.length - b.friends.length).map(users => users.name);
+
+console.log(getNamesSortedByFriendsCount(users));
+// [ 'Moore Hensley', 'Sharlene Bush', 'Elma Head', 'Carey Barr', 'Blackburn Dotson', 'Sheree Anthony', 'Ross Vazquez' ]

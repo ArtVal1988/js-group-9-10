@@ -10,27 +10,15 @@ const notepad = {
   notes: [],
 
   getNotes() {
-    /*
-     * Принимает: ничего
-     * Возвращает: все заметки, значение свойства notes
-     */
-    return notepad.notes;
+    return this.notes;
   },
 
   findNoteById(id) {
-    /*
-     * Ищет заметку в массиве notes
-     *
-     * Принимает: идентификатор заметки
-     * Возвращает: заметку с совпавшим полем id или undefined если ничего не найдено
-     */
-    for (const element of notepad.notes) {
-      // <WARNING!!!!! Правильней по смыслу будет использовать вместо element переменную note, что-бы он был читаемый. Ты всегда будешь перебирать элементы, для этого и существуют циклы. Здесь мы перебираем записки, и каждый раз у нас текущая записка. То есть из notes текущая - note. Имена по смыслу и содержанию
-      if (element.id === id) {
-        return element;
+    for (const note of this.notes) {
+      if (note.id === id) {
+        return note;
       }
     }
-    return undefined; // <WARNING!!!!! Это лишнее, метод по умолчанию если ничего нечего ретернуть, вернет андефанд
   },
   saveNote(note) {
     /*
@@ -39,8 +27,8 @@ const notepad = {
      * Принимает: объект заметки
      * Возвращает: сохраненную заметку
      */
-    notepad.notes.push(note);
-    return note; // <WARNING!!!!! ты тут возвращаешь то что вводные данные, каков хитрый замысел, нужно просто, note закинуть в "базу" - в нашем случае d массив объектов notepad.notes - и все тут, возвращать ничего не нужно
+    this.notes.push(note);
+    return note;
   },
   deleteNote(id) {
     /*
@@ -50,10 +38,9 @@ const notepad = {
      * Возвращает: ничего
      */
 
-    for (let i = 0; i < notepad.notes.length; i += 1) {
-      if (notepad.notes[i].id === id) {
-        notepad.notes.splice(i, 1);
-        return;
+    for (let i = 0; i < this.notes.length; i += 1) {
+      if (this.notes[i].id === id) {
+        this.notes.splice(i, 1);
       }
     }
   },
@@ -67,25 +54,13 @@ const notepad = {
      * Принимает: идентификатор заметки и объект, полями которого надо обновить заметку
      * Возвращает: обновленную заметку
      */
+    const note = this.findNoteById(id);
+    if (!note) return;
 
-    return Object.assign(notepad.findNoteById(id), updatedContent);
-
-    /*   ^^^
-     *   ^^^
-     *   ^^^
-     *   ^^^
-     *   GOOD
-     *
-     *   Но потихоньку хорошо-бы переходить на современные плюшки и синтаксический сахар,
-     *    типа:
-     *
-     *   const note = notepad.findNoteById(id);
-     *   if (!note) return; если не нашли - тупо выходим, обрываем выполнение метода и возвращаем undefined
-     *   return {...note, ...updatedContent} распыляем, копируем все новое в note и возвращаем обновленный
-     *
-     *
-     *
-     */
+    return {
+      ...note,
+      ...updatedContent
+    };
   },
   updateNotePriority(id, priority) {
     /*
@@ -94,18 +69,10 @@ const notepad = {
      * Принимает: идентификатор заметки и ее новый приоритет
      * Возвращает: обновленную заметку
      */
-
-    return (notepad.findNoteById(id).priority = priority); //????
-
-    /* Чо ты тут возвращаешь, новый приоритет? а нам нужно?
-     * И лучше код писать развернутей для читаемости - нет ничего плохого в доп. переменных, например:
-     *
-     * const note = notepad.findNoteById(id);
-     * if (!note) return;
-     * note.priority = priority;
-     * return note;
-     *
-     */
+    const note = this.findNoteById(id);
+    if (!note) return;
+    note.priority = priority;
+    return note;
   },
   filterNotesByQuery(query) {
     /*
@@ -117,21 +84,19 @@ const notepad = {
      */
     const notesByQuery = [];
 
-    for (const element of notepad.notes) {
-      let { title, body } = element;
+    for (const note of this.notes) {
+      let {
+        title,
+        body
+      } = note;
       title = title.toLowerCase();
       body = body.toLowerCase();
+      query = query.toLowerCase();
       if (title.includes(query) || body.includes(query)) {
-        notesByQuery.push(element);
+        notesByQuery.push(note);
       }
     }
     return notesByQuery;
-    /*
-     * Правильно ли сработает метод filterNotesByQuery если через параметр query,
-     * передадут например значение 'HtMl'?
-     *
-     *
-     */
   },
 
   filterNotesByPriority(priority) {
@@ -143,9 +108,9 @@ const notepad = {
      * Возвращает: новый массив заметок с подходящим приоритетом*/
 
     const notesByPriority = [];
-    for (const element of notepad.notes) {
-      if (element.priority === priority) {
-        notesByPriority.push(element);
+    for (const note of this.notes) {
+      if (note.priority === priority) {
+        notesByPriority.push(note);
       }
     }
     return notesByPriority;
@@ -157,32 +122,28 @@ const notepad = {
 notepad.saveNote({
   id: 1,
   title: 'JavaScript essentials',
-  body:
-    'Get comfortable with all basic JavaScript concepts: variables, loops, arrays, branching, objects, functions, scopes, prototypes etc',
+  body: 'Get comfortable with all basic JavaScript concepts: variables, loops, arrays, branching, objects, functions, scopes, prototypes etc',
   priority: PRIORITY_TYPES.HIGH,
 });
 
 notepad.saveNote({
   id: 2,
   title: 'Refresh HTML and CSS',
-  body:
-    'Need to refresh HTML and CSS concepts, after learning some JavaScript. Maybe get to know CSS Grid and PostCSS, they seem to be trending.',
+  body: 'Need to refresh HTML and CSS concepts, after learning some JavaScript. Maybe get to know CSS Grid and PostCSS, they seem to be trending.',
   priority: PRIORITY_TYPES.NORMAL,
 });
 
 notepad.saveNote({
   id: 3,
   title: 'Get comfy with Frontend frameworks',
-  body:
-    'First must get some general knowledge about frameworks, then maybe try each one for a week or so. Need to choose between React, Vue and Angular, by reading articles and watching videos.',
+  body: 'First must get some general knowledge about frameworks, then maybe try each one for a week or so. Need to choose between React, Vue and Angular, by reading articles and watching videos.',
   priority: PRIORITY_TYPES.NORMAL,
 });
 
 notepad.saveNote({
   id: 4,
   title: 'Winter clothes',
-  body:
-    "Winter is coming! Need some really warm clothes: shoes, sweater, hat, jacket, scarf etc. Maybe should get a set of sportwear as well so I'll be able to do some excercises in the park.",
+  body: "Winter is coming! Need some really warm clothes: shoes, sweater, hat, jacket, scarf etc. Maybe should get a set of sportwear as well so I'll be able to do some excercises in the park.",
   priority: PRIORITY_TYPES.LOW,
 });
 
@@ -230,7 +191,9 @@ console.log(
 
 // Обновим контент заметки с id 3
 
-notepad.updateNoteContent(3, { title: 'Get comfy with React.js or Vue.js' });
+notepad.updateNoteContent(3, {
+  title: 'Get comfy with React.js or Vue.js'
+});
 console.log(
   'Заметки после обновления контента заметки с id 3: ',
   notepad.getNotes(),
@@ -240,5 +203,3 @@ console.log(
 
 notepad.deleteNote(2);
 console.log('Заметки после удаления с id 2: ', notepad.getNotes());
-
-console.log(notepad.findNoteById(5));
