@@ -20,43 +20,41 @@ const refs = getRefs();
 //RENDERING INITTIAL NOTES FROM TEMPLATE
 
 const createNoteMarkup = note => {
-        const noteWithTextPriority = {
-            ...note,
-            {
-                priority: Notepad.getPriorityName(note.priority)
-            }
-            console.log(noteWithTextPriority)
+    const noteWithTextPriority = Object.assign(note, {
+        priority: Notepad.getPriorityName(note.priority)
+    })
+    console.log(noteWithTextPriority)
 
-            return noteTemplate(note);
-        };
+    return noteTemplate(note);
+};
 
-        const createNoteListItemsMarkup = notes => {
-            return notes.map(note => createNoteMarkup(note)).join('');
-        };
+const createNoteListItemsMarkup = notes => {
+    return notes.map(note => createNoteMarkup(note)).join('');
+};
 
-        export const addItemToList = (listRef, note) => {
-            const noteMarkup = createNoteMarkup(note);
+export const addItemToList = (listRef, note) => {
+    const noteMarkup = createNoteMarkup(note);
 
-            listRef.insertAdjacentHTML('beforeend', noteMarkup);
+    listRef.insertAdjacentHTML('beforeend', noteMarkup);
 
-        };
+};
 
 
-        export const findParentListItem = child => {
-            const parentListItem = child.closest('.note-list__item');
+export const findParentListItem = child => {
+    const parentListItem = child.closest('.note-list__item');
 
-            return parentListItem;
-        }
+    return parentListItem;
+}
 
-        export const removeListItem = listItem => {
-            listItem.remove();
-        };
-
-
-        export const renderListItems = (listRef, data) => {
-            const markup = createNoteListItemsMarkup(data);
+export const removeListItem = listItem => {
+    listItem.remove();
+};
 
 
-            listRef.innerHTML = '';
-            listRef.insertAdjacentHTML('beforeend', markup);
-        };
+export const renderListItems = (listRef, data) => {
+    const markup = createNoteListItemsMarkup(data);
+
+
+    listRef.innerHTML = '';
+    listRef.insertAdjacentHTML('beforeend', markup);
+};
