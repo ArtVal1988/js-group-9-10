@@ -83,7 +83,8 @@ export default class Notepad {
     }
 
     static getPriorityName(priorityId) {
-        return Notepad.PRIORITIES[priorityId].name;
+        //console.log('PRIORITYid', priorityId);
+        return priorityId;
     }
 
 

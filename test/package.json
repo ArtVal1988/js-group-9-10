@@ -36,8 +36,6 @@
     "webpackbar": "^3.1.4"
   },
   "dependencies": {
-    "handlebars": "^4.1.0",
-    "micromodal": "^0.3.2",
-    "notyf": "^2.0.1"
+    "handlebars": "^4.1.0"
   }
 }
