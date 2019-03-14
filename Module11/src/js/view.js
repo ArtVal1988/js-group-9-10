@@ -1,4 +1,3 @@
-import { ICON_TYPES, NOTE_ACTIONS } from './utils/constants';
 import Notepad from './notepad-model';
 import noteTemplate from './../templates/note.hbs';
 
@@ -17,12 +16,13 @@ const refs = getRefs();
 
 //RENDERING INITTIAL NOTES FROM TEMPLATE
 const createNoteMarkup = note => {
-  const noteWithTextPriority = Object.assign(note, {
-    priority: Notepad.getPriorityName(note.priority),
-  });
-  console.log(noteWithTextPriority);
+  const noteWithTextPriority = {
+    ...note,
+    priority: Notepad.getPriorityName(note.priority)
+  };
+  // console.log(noteWithTextPriority);
 
-  return noteTemplate(note);
+  return noteTemplate(noteWithTextPriority);
 };
 
 const createNoteListItemsMarkup = notes => {

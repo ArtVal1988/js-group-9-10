@@ -1,3 +1,4 @@
+import ids from 'short-id';
 import {
     PRIORITY_TYPES
 } from './utils/constants';
@@ -28,12 +29,13 @@ export default class Notepad {
 
     saveNote(title, text) {
         const newNote = {
-            id: Notepad.generateUniqueId(),
+            id: ids.generate(),
             title: title,
             body: text,
             priority: PRIORITY_TYPES.LOW
         };
 
+        console.log("NEW ID!!!::::", newNote.id)
         this._notes.push(newNote);
 
         return newNote;
@@ -83,8 +85,8 @@ export default class Notepad {
     }
 
     static getPriorityName(priorityId) {
-        //console.log('PRIORITYid', priorityId);
-        return priorityId;
+        //console.log('PRIORITYid',priorityId);
+        return Notepad.PRIORITIES[priorityId].name;
     }
 
 

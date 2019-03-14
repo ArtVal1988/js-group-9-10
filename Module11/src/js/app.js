@@ -25,7 +25,7 @@ MicroModal.init();
 const handleEditorSubmit = event => {
     event.preventDefault();
 
-    console.log(event.currentTarget.elements);
+    // console.log(event.currentTarget.elements);
     const [input, textarea] = event.currentTarget.elements;
     const title = input.value;
     const text = textarea.value;
@@ -76,10 +76,10 @@ const handleListClick = ({
 };
 
 const handleFilterChange = event => {
-    console.log(event.target.value);
+    //console.log("EVENT", event.target.value);
 
     const filteredItems = notepad.filterNotes(event.target.value);
-    console.log(filteredItems)
+    console.log("FILTERED NOTES:", filteredItems)
 
     renderListItems(refs.list, filteredItems);
 };
