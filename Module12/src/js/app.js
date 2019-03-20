@@ -1,16 +1,5 @@
 import Notyf from 'notyf';
 import MicroModal from 'micromodal';
-
-import storage from './storage';
-
-console.log(storage)
-
-storage.save('lala', 'lolo');
-console.log(storage.load('lala'));
-storage.remove('lala');
-console.log(storage.load('lala'));
-localStorage.clear();
-
 import {
     NOTE_ACTIONS
 } from './utils/constants';
@@ -23,10 +12,10 @@ import {
     removeListItem,
     findParentListItem
 } from './view';
-
+import storage from './storage';
 import 'notyf/dist/notyf.min.css';
 
-const notepad = new Notepad(initialNotes);
+const notepad = new Notepad(storage.load('notes') || initialNotes);
 const refs = getRefs();
 const notyf = new Notyf();
 MicroModal.init();
@@ -45,14 +34,13 @@ const handleEditorSubmit = event => {
         return notyf.alert('Забыли что-то ввести!');
     }
 
-    const savedNote = notepad.saveNote(title, text);
+    notepad.saveNote(title, text).then(savedNote => {
+        addItemToList(refs.list, savedNote);
 
-    addItemToList(refs.list, savedNote);
-
-    MicroModal.close('note-editor-modal');
-    notyf.confirm("Заметка успешно добавлена")
-
-    event.currentTarget.reset();
+        MicroModal.close('note-editor-modal');
+        notyf.confirm("Заметка успешно добавлена")
+        event.currentTarget.reset();
+    });
 };
 
 const handleListClick = ({
@@ -70,9 +58,10 @@ const handleListClick = ({
             const listItem = findParentListItem(target);
 
             notepad.deleteNote(listItem.dataset.id)
-            removeListItem(listItem);
-
-            notyf.confirm('Заметка успешно удалена')
+                .then((deletedNote) => {
+                    removeListItem(listItem);
+                    notyf.confirm(`Заметка c id: "${deletedNote}" успешно удалена`)
+                });
             break;
 
         case NOTE_ACTIONS.EDIT:
@@ -88,10 +77,13 @@ const handleListClick = ({
 const handleFilterChange = event => {
     //console.log("EVENT", event.target.value);
 
-    const filteredItems = notepad.filterNotes(event.target.value);
-    console.log("FILTERED NOTES:", filteredItems)
+    notepad.filterNotes(event.target.value)
+        .then(filteredItems => {
+            renderListItems(refs.list, filteredItems);
 
-    renderListItems(refs.list, filteredItems);
+        })
+    // console.log("FILTERED NOTES:", filteredItems)
+
 };
 
 const handleAddClick = element => {

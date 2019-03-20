@@ -1,7 +1,6 @@
-[
-  {
+[{
     "id": "XWaQXcbk0",
-    "title": "JavaScript essentials",
+    "title": "JabaScript essentials",
     "body": "Get comfortable with all basic JavaScript concepts: variables, loops, arrays, branching, objects, functions, scopes, prototypes etc",
     "priority": 2
   },

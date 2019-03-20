@@ -6,9 +6,10 @@ const WebpackBar = require('webpackbar');
 
 const modeConfig = env => require(`./build-utils/webpack.${env}`)(env);
 
-module.exports = ({ mode = 'production' }) =>
-  webpackMerge(
-    {
+module.exports = ({
+    mode = 'production'
+  }) =>
+  webpackMerge({
       mode,
       entry: './src/index.js',
       output: {
@@ -16,8 +17,7 @@ module.exports = ({ mode = 'production' }) =>
         filename: 'bundle.js'
       },
       module: {
-        rules: [
-          {
+        rules: [{
             test: /\.js$/,
             exclude: /node_modules/,
             use: 'babel-loader'
@@ -28,15 +28,13 @@ module.exports = ({ mode = 'production' }) =>
           },
           {
             test: /\.(gif|png|jpe?g|svg)$/i,
-            use: [
-              {
-                loader: 'url-loader',
-                options: {
-                  name: 'images/[name].[ext]',
-                  limit: 5000
-                }
+            use: [{
+              loader: 'url-loader',
+              options: {
+                name: 'images/[name].[ext]',
+                limit: 5000
               }
-            ]
+            }]
           },
           {
             test: /\.hbs$/,
