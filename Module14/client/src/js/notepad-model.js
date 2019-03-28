@@ -10,12 +10,13 @@ export default class Notepad {
     return this._notes;
   }
 
-  get() {
-    return api.getNotes().then(notes => {
-      this._notes = notes;
-
+  async get() {
+    try {
+      this._notes = await api.getNotes();
       return this._notes;
-    });
+    } catch (err) {
+      throw err;
+    }
   }
 
   findNoteById(id) {
@@ -24,26 +25,28 @@ export default class Notepad {
     }
   }
 
-  save(title, text) {
+  async save(title, text) {
     const newNote = {
       title: title,
       body: text,
       priority: PRIORITY_TYPES.LOW,
     };
-
-    return api.saveNote(newNote).then(note => {
+    try {
+      const note = await api.saveNote(newNote);
       this._notes.push(note);
-
       return note;
-    });
+    } catch (err) {
+      throw err;
+    }
   }
 
-  delete(id) {
-    return api.deleteNote(id).then(id => {
+  async delete(id) {
+    try {
+      await api.deleteNote(id);
       this._notes = this._notes.filter(note => note.id !== id);
-
-      return id;
-    });
+    } catch (err) {
+      throw err;
+    }
   }
 
   updateNoteContent(id, updatedContent) {
