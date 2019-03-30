@@ -166,8 +166,6 @@ const createNoteFooter = priority => {
   notePriority.classList.add('note__priority');
   notePriority.textContent = `Priority: ${Notepad.getPriorityName(priority)}`;
 
-  noteSection1.append(decreaseButton, increaseButton, notePriority);
-
   const noteSection2 = document.createElement('section');
   noteSection1.classList.add('note__section');
 
@@ -177,8 +175,8 @@ const createNoteFooter = priority => {
     ICON_TYPES.DELETE,
   );
 
+  noteSection1.append(decreaseButton, increaseButton, notePriority);
   noteSection2.append(editButton, deleteButton);
-
   noteFooter.append(noteSection1, noteSection2);
 
   return noteFooter;
