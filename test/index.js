@@ -51,6 +51,7 @@ if (!navigator.geolocation) {
 } else {
   const opts = {
     enableHighAccuracy: true,
+    timeout: 30 * 1000,
   };
 
   navigator.geolocation.getCurrentPosition(
