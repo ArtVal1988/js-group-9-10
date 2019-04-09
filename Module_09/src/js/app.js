@@ -20,28 +20,33 @@ const NOTE_ACTIONS = {
   DECREASE_PRIORITY: 'decrease-priority',
 };
 
-const initialNotes = [{
+const initialNotes = [
+  {
     id: 1,
     title: 'JavaScript essentials',
-    body: 'Get comfortable with all basic JavaScript concepts: variables, loops, arrays, branching, objects, functions, scopes, prototypes etc',
+    body:
+      'Get comfortable with all basic JavaScript concepts: variables, loops, arrays, branching, objects, functions, scopes, prototypes etc',
     priority: PRIORITY_TYPES.HIGH,
   },
   {
     id: 2,
     title: 'Refresh HTML and CSS',
-    body: 'Need to refresh HTML and CSS concepts, after learning some JavaScript. Maybe get to know CSS Grid and PostCSS, they seem to be trending.',
+    body:
+      'Need to refresh HTML and CSS concepts, after learning some JavaScript. Maybe get to know CSS Grid and PostCSS, they seem to be trending.',
     priority: PRIORITY_TYPES.NORMAL,
   },
   {
     id: 3,
     title: 'Get comfy with Frontend frameworks',
-    body: 'First should get some general knowledge about frameworks, then maybe try each one for a week or so. Need to choose between React, Vue and Angular, by reading articles and watching videos.',
+    body:
+      'First should get some general knowledge about frameworks, then maybe try each one for a week or so. Need to choose between React, Vue and Angular, by reading articles and watching videos.',
     priority: PRIORITY_TYPES.NORMAL,
   },
   {
     id: 4,
     title: 'Winter clothes',
-    body: "Winter is coming! Need some really warm clothes: shoes, sweater, hat, jacket, scarf etc. Maybe should get a set of sportwear as well so I'll be able to do some excercises in the park.",
+    body:
+      "Winter is coming! Need some really warm clothes: shoes, sweater, hat, jacket, scarf etc. Maybe should get a set of sportwear as well so I'll be able to do some excercises in the park.",
     priority: PRIORITY_TYPES.LOW,
   },
 ];
@@ -52,8 +57,8 @@ class Notepad {
       .toString(36)
       .substring(2, 15) +
       Math.random()
-      .toString(36)
-      .substring(2, 15)
+        .toString(36)
+        .substring(2, 15);
   }
 
   constructor(notes = []) {
@@ -75,7 +80,7 @@ class Notepad {
       id: Notepad.generateUniqueId(),
       title: title,
       body: text,
-      priority: PRIORITY_TYPES.LOW
+      priority: PRIORITY_TYPES.LOW,
     };
 
     this._notes.push(newNote);
@@ -111,10 +116,7 @@ class Notepad {
     const filtredNotes = [];
 
     for (const note of this._notes) {
-      const {
-        title,
-        body
-      } = note;
+      const { title, body } = note;
       let noteContent = `${title} + ${body}`.toLowerCase();
       let hasQuery = noteContent.includes(query.toLowerCase());
 
@@ -135,17 +137,17 @@ Notepad.PRIORITIES = {
   0: {
     id: 0,
     value: 0,
-    name: 'Low'
+    name: 'Low',
   },
   1: {
     id: 1,
     value: 1,
-    name: 'Normal'
+    name: 'Normal',
   },
   2: {
     id: 2,
     value: 2,
-    name: 'High'
+    name: 'High',
   },
 };
 
@@ -217,12 +219,7 @@ const createActionButton = (action, icon) => {
   return actionButton;
 };
 
-const createListItem = ({
-  id,
-  title,
-  body,
-  priority
-}) => {
+const createListItem = ({ id, title, body, priority }) => {
   const listItem = document.createElement('li');
   listItem.classList.add('note-list__item');
   listItem.dataset.id = id;
@@ -262,8 +259,6 @@ const refs = {
 
 const notepad = new Notepad(initialNotes);
 
-
-
 //Handlers
 const handleEditorSubmit = event => {
   event.preventDefault();
@@ -272,7 +267,6 @@ const handleEditorSubmit = event => {
   const [input, textarea] = event.currentTarget.elements;
   const title = input.value;
   const text = textarea.value;
-
 
   if (title.trim() === '' || text.trim() === '') {
     return alert('Забыли что-то ввести!');
@@ -285,9 +279,7 @@ const handleEditorSubmit = event => {
   event.currentTarget.reset();
 };
 
-const handleListClick = ({
-  target
-}) => {
+const handleListClick = ({ target }) => {
   // console.log(event.target);
   // console.log(event.target.nodeName);
 
@@ -319,10 +311,10 @@ const removeListItem = element => {
 };
 
 const handleFilterChange = event => {
-  console.log(event.target.value);
+  // console.log(event.target.value);
 
   const filteredItems = notepad.filterNotes(event.target.value);
-  console.log(filteredItems)
+  console.log(filteredItems);
 
   renderListItems(refs.list, filteredItems);
 };
